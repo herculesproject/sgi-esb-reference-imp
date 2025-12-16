@@ -1,0 +1,28 @@
+{
+  "folders": [
+    {
+      "path": "sgi-esb-common"
+    },
+    {
+      "path": "sgi-esb-sgdoc"
+    },
+    {
+      "path": "sgi-esb-sge"
+    },
+    {
+      "path": "sgi-esb-sgemp"
+    },
+    {
+      "path": "sgi-esb-sgepii"
+    },
+    {
+      "path": "sgi-esb-sgi"
+    },
+    {
+      "path": "sgi-esb-sgo"
+    },
+    {
+      "path": "sgi-esb-sgp"
+    }
+  ]
+}
