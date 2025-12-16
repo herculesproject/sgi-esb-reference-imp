@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/sgo/public" name="sgo-public-api" xmlns="http://ws.apache.org/ns/synapse">
+
+  <!-- areas conocimiento  -->
+  <resource methods="GET" uri-template="/areas-conocimiento/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/areas-conocimiento" value="/public/areas-conocimiento" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- centros -->
+  <resource methods="GET" uri-template="/centros/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/centros" value="/public/centros" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- departamentos -->
+  <resource methods="GET" url-mapping="/departamentos">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/departamentos" value="/public/departamentos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <!-- paises -->
+  <resource methods="GET" url-mapping="/paises">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/paises" value="/public/paises" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- comunidades autonomas -->
+  <resource methods="GET" url-mapping="/comunidades-autonomas">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/comunidades-autonomas" value="/public/comunidades-autonomas" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- provincias -->
+  <resource methods="GET" url-mapping="/provincias">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/provincias" value="/public/provincias" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- clasificaciones -->
+  <resource methods="GET" url-mapping="/clasificaciones">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/clasificaciones" value="/public/clasificaciones" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/clasificaciones/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/clasificaciones" value="/public/clasificaciones" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgo-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+</api>
