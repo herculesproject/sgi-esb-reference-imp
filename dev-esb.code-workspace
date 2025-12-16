@@ -23,6 +23,9 @@
     },
     {
       "path": "sgi-esb-sgp"
+    },
+    {
+      "path": ".github"
     }
   ]
 }
