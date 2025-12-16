@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/sgp/public" name="sgp-public-api" xmlns="http://ws.apache.org/ns/synapse">
+
+  <!-- categorias-profesionales -->
+  <resource methods="GET" uri-template="/categorias-profesionales/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/categorias-profesionales" value="/public/categorias-profesionales" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- colectivos -->
+  <resource methods="GET" uri-template="/colectivos/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/colectivos" value="/public/colectivos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- datos-academicos -->
+  <resource methods="GET" uri-template="/datos-academicos/persona/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/datos-academicos" value="/public/datos-academicos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- datos-contacto -->
+  <resource methods="GET" uri-template="/datos-contacto/persona/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/datos-contacto" value="/public/datos-contacto" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      
+      <property name="personaId" expression="get-property('uri.var.id')" />
+
+      <!-- Get datos contacto-->
+      <call>
+        <endpoint key="sgp-endpoint" />
+      </call>
+
+      <enrich>
+        <source clone="false" type="body" />
+        <target type="property" property="datosContacto" />
+      </enrich>
+
+      <property expression="$axis2:HTTP_SC" name="httpScMainResponse" scope="default" type="STRING"/>
+
+      <!-- recuperar los ids entidades relacionadas --> 
+      <property expression="json-eval($.paisContactoRef)" name="paisContactoRef" scope="default" type="STRING"/>
+      <property expression="json-eval($.comAutonomaContactoRef)" name="comAutonomaContactoRef" scope="default" type="STRING"/>
+      <property expression="json-eval($.provinciaContactoRef)" name="provinciaContactoRef" scope="default" type="STRING"/>
+
+
+      <!-- Get paisContacto -->
+      <filter xpath="boolean(get-property('paisContactoRef')) and string(get-property('paisContactoRef')) != 'null' and string(get-property('paisContactoRef')) != ''">
+        <property name="paisContactoUrl" expression="concat('/public/paises/', get-property('paisContactoRef'))" scope="default" type="STRING" />
+
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:paisContactoUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "paisContacto" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="paisContacto" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:paisContactoUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Get comAutonomaContacto -->
+      <filter xpath="boolean(get-property('comAutonomaContactoRef')) and string(get-property('comAutonomaContactoRef')) != 'null' and string(get-property('comAutonomaContactoRef')) != ''">
+        <property name="comAutonomaContactoUrl" expression="concat('/public/comunidades-autonomas/', get-property('comAutonomaContactoRef'))" scope="default" type="STRING" />
+        
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:comAutonomaContactoUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "comAutonomaContacto" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="comAutonomaContacto" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:comAutonomaContactoUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Get provinciaContacto -->
+      <filter xpath="boolean(get-property('provinciaContactoRef')) and string(get-property('provinciaContactoRef')) != 'null' and string(get-property('provinciaContactoRef')) != ''">
+        <property name="provinciaContactoUrl" expression="concat('/public/provincias/', get-property('provinciaContactoRef'))" scope="default" type="STRING" />
+        
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:provinciaContactoUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "provinciaContacto" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="provinciaContacto" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:provinciaContactoUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Set datosContacto as body -->
+      <property name="HTTP_SC" scope="axis2" type="STRING" expression="$ctx:httpScMainResponse"/>
+
+      <payloadFactory media-type="json">
+        <format>
+          $1
+        </format>
+        <args>
+          <arg expression="get-property('datosContacto')" literal="true"/>
+        </args>
+      </payloadFactory>
+
+      <!-- Remove paisContactoRef && comAutonomaContactoRef && provinciaContactoRef -->
+      <enrich>
+        <source clone="true" xpath="json-eval($.paisContactoRef,$.comAutonomaContactoRef,$.provinciaContactoRef)"/>
+        <target type="body" action="remove"/>
+      </enrich>
+
+      <!-- Set paisContacto --> 
+      <filter xpath="boolean(get-property('paisContacto')) and string(get-property('paisContacto')) != 'null' and string(get-property('paisContacto')) != ''">
+        <enrich>
+          <source clone="true" property="paisContacto" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <!-- Set comAutonomaContacto --> 
+      <filter xpath="boolean(get-property('comAutonomaContacto')) and string(get-property('comAutonomaContacto')) != 'null' and string(get-property('comAutonomaContacto')) != ''">
+        <enrich>
+          <source clone="true" property="comAutonomaContacto" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <!-- Set provinciaContacto --> 
+      <filter xpath="boolean(get-property('provinciaContacto')) and string(get-property('provinciaContacto')) != 'null' and string(get-property('provinciaContacto')) != ''">
+        <enrich>
+          <source clone="true" property="provinciaContacto" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <respond/>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- niveles-academicos -->
+  <resource methods="GET" uri-template="/niveles-academicos/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/niveles-academicos" value="/public/niveles-academicos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- personas -->
+  <resource methods="GET" url-mapping="/personas">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/personas" value="/public/personas" fragment="path" />
+        </rewriterule>
+      </rewrite>      
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="fn:url-encode(get-property('url'))" /> 
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/personas/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/personas" value="/public/personas" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/personas/formly/view">
+    <inSequence>
+
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"700px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Generales"
+        },
+        "fieldGroup": [
+          {
+            "key": "nombre",
+            "type": "input",
+            "templateOptions": {
+              "disabled": true,
+              "label": "Nombre",
+              "placeholder": "Introduce nombre"
+            }
+          },
+          {
+            "key": "apellidos",
+            "type": "input",
+            "templateOptions": {
+              "disabled": true,
+              "label": "Apellidos",
+              "placeholder": "Introduce apellidos"
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoDocumentoId",
+                "type": "select-tipos-documentos",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Tipo de documento",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce tipo de documento",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "numeroDocumento",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Número de documento",
+                  "placeholder": "Introduce número de documento"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "sexoId",
+                "type": "select-sexos",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Sexo",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce sexo",
+                  "required": true,
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "colectivoId",
+                "type": "select-colectivos",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Colectivo",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce colectivo",
+                  "required": true,
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "personalPropio",
+                "type": "select",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Personal propio",
+                  "placeholder": "Introduce personal propio",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": true,
+                      "label": "Sí"
+                    },
+                    {
+                      "value": false,
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Personales"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "fechaNacimiento",
+                "type": "datepicker",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Fecha de nacimiento",
+                  "placeholder": "Introduce fecha de nacimiento"
+                }
+              },
+              {
+                "key": "paisNacimientoRef",
+                "type": "select-paises",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "País de nacimiento",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce país de nacimiento",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "comAutonomaNacimientoRef",
+                "type": "select-comunidades",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "C. Autón./Reg. de nacimiento",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce C. Autón./Reg. de nacimiento",
+                  "propertyBound": "paisNacimientoRef",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "ciudadNacimiento",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Ciudad de nacimiento",
+                  "placeholder": "Introduce ciudad de nacimiento"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Académicos"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "nivelAcademicoId",
+                "type": "select-niveles-academicos",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Nivel académico",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce nivel académico",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "fechaObtencion",
+                "type": "datepicker",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Fecha de obtención",
+                  "placeholder": "Introduce fecha de obtención"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos de Vinculación"
+        },
+        "fieldGroup": [
+          {
+            "wrappers": [
+              "subtitle-div"
+            ],
+            "template": "Datos entidad propia"
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "categoriaId",
+                "type": "select-categorias-profesionales",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Categoría",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce categoría",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "fechaCategoria",
+                "type": "datepicker",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Fecha de categoría",
+                  "placeholder": "Introduce fecha de categoría"
+                }
+              }
+            ]
+          },
+          {
+            "type": "table-crud",
+            "key": "historicoCategoriasProfesionales",
+            "templateOptions": {
+              "disabled": true,
+              "entity": "categoría",
+              "gender": "female",
+              "title": "Histórico de Categorías"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Histórico de Categorías"
+              },
+              "fieldGroup": [
+                {
+                  "key": "categoriaProfesional",
+                  "type": "select-categorias-profesionales",
+                  "className": "flex-1",
+                  "templateOptions": {
+                    "disabled": true,
+                    "label": "Categoría",
+                    "labelProp": "nombre",
+                    "order": 10,
+                    "placeholder": "Introduce categoría",
+                    "valueProp": "id"
+                  }
+                },
+                {
+                  "key": "fechaObtencion",
+                  "type": "datepicker",
+                  "className": "flex-1",
+                  "templateOptions": {
+                    "disabled": true,
+                    "label": "Fecha obtención categoría",
+                    "luxonFormat": "shortDate",
+                    "order": 20,
+                    "placeholder": "Introduce fecha de obtención de la categoría"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "departamentoId",
+                "type": "select-departamentos",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Departamento",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce departamento",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "areaConocimientoRef",
+                "type": "select-areas-conocimiento",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Área conocimiento",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce área de conocimiento",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "centroRef",
+                "type": "select-centros",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Centro",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce centro",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "wrappers": [
+              "subtitle-div"
+            ],
+            "template": "Datos entidad externa"
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "entidadRef",
+                "type": "select-empresas",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Entidad externa",
+                  "labelProp": "nombre",
+                  "placeholder": "Selecciona entidad externa",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos de Contacto"
+        },
+        "fieldGroup": [
+          {
+            "key": "direccionContacto",
+            "type": "input",
+            "className": "flex-1",
+            "templateOptions": {
+              "disabled": true,
+              "label": "Dirección",
+              "placeholder": "Introduce dirección"
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "paisContactoRef",
+                "type": "select-paises",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "País de contacto",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce país de dirección de contacto",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "comAutonomaContactoRef",
+                "type": "select-comunidades",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "C. Autón./Reg. de dirección de contacto",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce C. Autón./Reg. de dirección de contacto",
+                  "propertyBound": "paisContactoRef",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "provinciaContactoRef",
+                "type": "select-provincias",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Provincia de dirección de contacto",
+                  "labelProp": "nombre",
+                  "placeholder": "Introduce provincia de dirección de contacto",
+                  "propertyBound": "comAutonomaContactoRef",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "codigoPostalContacto",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Código postal de contacto",
+                  "placeholder": "Introduce código postal de contacto"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "ciudadContacto",
+                "type": "input",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Ciudad de contacto",
+                  "placeholder": "Introduce ciudad de contacto"
+                }
+              }
+            ]
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "telefonos",
+            "templateOptions": {
+              "disabled": true,
+              "entity": "teléfono",
+              "gender": "male",
+              "title": "Télefonos fijos"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Télefonos fijos"
+              },
+              "fieldGroup": [
+                {
+                  "key": "telefono",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Teléfono fijo",
+                    "order": 20,
+                    "placeholder": "Introduce teléfono"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "moviles",
+            "templateOptions": {
+              "disabled": true,
+              "entity": "móvil",
+              "gender": "male",
+              "title": "Teléfonos móviles"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Télefonos móviles"
+              },
+              "fieldGroup": [
+                {
+                  "key": "movil",
+                  "type": "input",
+                  "templateOptions": {
+                    "disabled": false,
+                    "label": "Teléfono movil",
+                    "order": 20,
+                    "placeholder": "Introduce teléfono movil",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "emails",
+            "templateOptions": {
+              "disabled": true,
+              "entity": "email",
+              "gender": "male",
+              "title": "Emails"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "gender": "male",
+                "text": "Email"
+              },
+              "fieldGroup": [
+                {
+                  "key": "email",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Email",
+                    "order": 20,
+                    "placeholder": "Introduce email"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args>
+          <arg value="[]" literal="true" />
+        </args>
+      </payloadFactory>
+      <respond />
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/personas/formly/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/personas" value="/public/personas" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- personas autocomplete -->
+  <resource methods="GET" url-mapping="/personasFast">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/personasFast" value="/public/personas/autocomplete" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="fn:url-encode(get-property('url'))" /> 
+
+      <!-- Force page size to 11 and page 0 -->
+      <header name="X-Page" value="0" scope="transport"/>
+      <header name="X-Page-Size" value="11" scope="transport"/>
+
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- sexos -->
+  <resource methods="GET" url-mapping="/sexos">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/sexos" value="/public/sexos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- tipos-documento -->
+  <resource methods="GET" url-mapping="/tipos-documento">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/tipos-documento" value="/public/tipos-documento" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sgp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- vinculaciones -->
+  <resource methods="GET" uri-template="/vinculaciones/persona/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/vinculaciones" value="/public/vinculaciones" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      
+      <property name="personaId" expression="get-property('uri.var.id')" />
+
+      <!-- Get vinculaciones-->
+      <call>
+        <endpoint key="sgp-endpoint" />
+      </call>
+
+      <enrich>
+        <source clone="false" type="body" />
+        <target type="property" property="vinculaciones" />
+      </enrich>
+
+      <property expression="$axis2:HTTP_SC" name="httpScMainResponse" scope="default" type="STRING"/>
+
+      <!-- recuperar los ids entidades relacionadas --> 
+      <property expression="json-eval($.areaConocimientoRef)" name="areaConocimientoRef" scope="default" type="STRING"/>
+      <property expression="json-eval($.centroRef)" name="centroRef" scope="default" type="STRING"/>
+      <property expression="json-eval($.departamentoRef)" name="departamentoRef" scope="default" type="STRING"/>
+
+
+      <!-- Get areaConocimiento -->
+      <filter xpath="boolean(get-property('areaConocimientoRef')) and string(get-property('areaConocimientoRef')) != 'null' and string(get-property('areaConocimientoRef')) != ''">
+        <property name="areaConocimientoUrl" expression="concat('/public/areas-conocimiento/', get-property('areaConocimientoRef'))" scope="default" type="STRING" />
+        
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:areaConocimientoUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "areaConocimiento" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="areaConocimiento" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:areaConocimientoUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Get centro -->
+      <filter xpath="boolean(get-property('centroRef')) and string(get-property('centroRef')) != 'null' and string(get-property('centroRef')) != ''">
+        <property name="centroUrl" expression="concat('/public/centros/', get-property('centroRef'))" scope="default" type="STRING" />
+        
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:centroUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "centro" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="centro" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:centroUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Get departamento -->
+      <filter xpath="boolean(get-property('departamentoRef')) and string(get-property('departamentoRef')) != 'null' and string(get-property('departamentoRef')) != ''">
+        <property name="departamentoUrl" expression="concat('/public/departamentos/', get-property('departamentoRef'))" scope="default" type="STRING" />
+        
+        <payloadFactory media-type="json">
+          <format/>
+          <args/>
+        </payloadFactory>
+
+        <property name="BLOCKING_SENDER_PRESERVE_REQ_HEADERS" value="false"/>
+        <property name="HTTP_METHOD" value="GET" scope="axis2" type="STRING"/>
+        <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN" />
+        <property name="REST_URL_POSTFIX" expression="$ctx:departamentoUrl" scope="axis2" type="STRING" />
+        
+        <call>
+          <endpoint key="sgo-endpoint" />
+        </call>
+
+        <filter source="$axis2:HTTP_SC" regex="200">
+          <then>
+            <payloadFactory media-type="json">
+              <format>
+                {
+                  "departamento" : $1
+                }
+              </format>
+              <args>
+                <arg evaluator="json" expression="$"/>
+              </args>
+            </payloadFactory>
+            <enrich>
+              <source clone="false" type="body" />
+              <target type="property" property="departamento" />
+            </enrich>
+          </then>
+          <else>
+            <log level="full">
+              <property name="url" expression="$ctx:departamentoUrl"/>
+              <property name="error" expression="$axis2:HTTP_SC"/>
+              <property name="personaId" expression="$ctx:personaId"/>
+            </log>
+          </else>
+        </filter>
+      </filter>
+
+      <!-- Set vinculaciones as body -->
+      <property name="HTTP_SC" scope="axis2" type="STRING" expression="$ctx:httpScMainResponse"/>
+
+      <payloadFactory media-type="json">
+        <format>
+          $1
+        </format>
+        <args>
+          <arg expression="get-property('vinculaciones')" literal="true"/>
+        </args>
+      </payloadFactory>
+
+      <!-- Remove areaConocimientoRef && centroRef && departamentoRef -->
+      <enrich>
+        <source clone="true" xpath="json-eval($.areaConocimientoRef,$.centroRef,$.departamentoRef)"/>
+        <target type="body" action="remove"/>
+      </enrich>
+
+      <!-- Set areaConocimiento --> 
+      <filter xpath="boolean(get-property('areaConocimiento')) and string(get-property('areaConocimiento')) != 'null' and string(get-property('areaConocimiento')) != ''">
+        <enrich>
+          <source clone="true" property="areaConocimiento" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <!-- Set centro --> 
+      <filter xpath="boolean(get-property('centro')) and string(get-property('centro')) != 'null' and string(get-property('centro')) != ''">
+        <enrich>
+          <source clone="true" property="centro" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <!-- Set departamento --> 
+      <filter xpath="boolean(get-property('departamento')) and string(get-property('departamento')) != 'null' and string(get-property('departamento')) != ''">
+        <enrich>
+          <source clone="true" property="departamento" type="property"/>
+          <target action="child" xpath="json-eval($)"/>
+        </enrich>
+      </filter>
+
+      <respond/>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+</api>
