@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/sgemp" name="sgemp-api" xmlns="http://ws.apache.org/ns/synapse">
+
+  <!-- empresas -->
+  <resource methods="GET" url-mapping="/empresas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value=""/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/empresas/modificadas-ids">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/empresas/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value=""/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="POST" url-mapping="/empresas/formly">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-C"/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="PUT" uri-template="/empresas/formly/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-E"/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/empresas/formly/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-E,ESB-EMP-V"/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/empresas/formly/create">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-C"/>
+      </call-template>
+      <sequence key="sgemp-remove-authorization-header-sequence" />
+
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"900px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Generales"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoSede",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Tipo de sede",
+                  "placeholder": "Introduce tipo de sede",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "entidad",
+                      "label": "Entidad"
+                    },
+                    {
+                      "value": "subentidad",
+                      "label": "Subentidad"
+                    }
+                  ]
+                }
+              },
+              {
+                "key": "datosEconomicos",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Datos económicos",
+                  "placeholder": "Introduce datos económicos",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": true,
+                      "label": "Sí"
+                    },
+                    {
+                      "value": false,
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "nombre",
+            "type": "input",
+            "templateOptions": {
+              "label": "Nombre",
+              "placeholder": "Introduce nombre",
+              "required": true
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "padreId",
+                "type": "select-empresas",
+                "className": "flex-1",
+                "hideExpression": "!model.tipoSede || model.tipoSede === 'entidad'",
+                "templateOptions": {
+                  "disabled": false,
+                  "label": "Entidad principal",
+                  "placeholder": "Selecciona entidad principal",
+                  "required": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoIdentificadorId",
+                "type": "select-tipos-identificadores",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Tipo de identificador fiscal",
+                  "placeholder": "Introduce tipo de identificador fiscal",
+                  "required": true,
+                  "valueProp": "id",
+                  "labelProp": "nombre"
+                }
+              },
+              {
+                "key": "numeroIdentificacion",
+                "type": "input",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Número de identificador fiscal",
+                  "placeholder": "Introduce número de identificador fiscal",
+                  "required": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos de Contacto"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "paisRef",
+                "type": "select-paises",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "País",
+                  "placeholder": "Seleccionar país",
+                  "valueProp": "id",
+                  "labelProp": "nombre"
+                }
+              },
+              {
+                "key": "comunidadAutonomaRef",
+                "type": "select-comunidades",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "C. Autón./Reg.",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar C. Autón./Reg.",
+                  "propertyBound": "paisRef",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "provinciaRef",
+                "type": "select-provincias",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": false,
+                  "label": "Provincia",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar provincia",
+                  "propertyBound": "comunidadAutonomaRef",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "poblacion",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Ciudad",
+                  "placeholder": "Introduce ciudad"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "codigoPostal",
+                "type": "input",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "label": "Código postal",
+                  "placeholder": "Introduce código postal",
+                  "required": false
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "direccion",
+                "type": "input",
+                "className": "flex-2",
+                "templateOptions": {
+                  "label": "Dirección",
+                  "placeholder": "Introduce dirección"
+                }
+              }
+            ]
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "telefonos",
+            "templateOptions": {
+              "entity": "teléfono",
+              "gender": "male",
+              "title": "Teléfonos"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Teléfonos"
+              },
+              "fieldGroup": [
+                {
+                  "key": "telefono",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Teléfono/Móvil",
+                    "order": 20,
+                    "placeholder": "Introduce teléfono/móvil",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "emails",
+            "templateOptions": {
+              "entity": "email",
+              "gender": "male",
+              "title": "Emails"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "gender": "male",
+                "text": "Email"
+              },
+              "fieldGroup": [
+                {
+                  "key": "email",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Email",
+                    "order": 20,
+                    "placeholder": "Introduce email",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+        </args>
+      </payloadFactory>
+      <respond/>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/empresas/formly/update">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-E"/>
+      </call-template>
+      <sequence key="sgemp-remove-authorization-header-sequence" />
+
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"900px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Generales"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoSede",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Tipo de sede",
+                  "placeholder": "Introduce tipo de sede",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": "entidad",
+                      "label": "Entidad"
+                    },
+                    {
+                      "value": "subentidad",
+                      "label": "Subentidad"
+                    }
+                  ]
+                }
+              },
+              {
+                "key": "datosEconomicos",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Datos económicos",
+                  "placeholder": "Introduce datos económicos",
+                  "required": true,
+                  "options": [
+                    {
+                      "value": true,
+                      "label": "Sí"
+                    },
+                    {
+                      "value": false,
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "nombre",
+            "type": "input",
+            "templateOptions": {
+              "label": "Nombre",
+              "placeholder": "Introduce nombre",
+              "required": true
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "padreId",
+                "type": "select-empresas",
+                "className": "flex-1",
+                "hideExpression": "!model.tipoSede || model.tipoSede === 'entidad'",
+                "templateOptions": {
+                  "disabled": false,
+                  "label": "Entidad principal",
+                  "placeholder": "Selecciona entidad principal",
+                  "required": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoIdentificadorId",
+                "type": "select-tipos-identificadores",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Tipo de identificador fiscal",
+                  "placeholder": "Introduce tipo de identificador fiscal",
+                  "required": true,
+                  "valueProp": "id",
+                  "labelProp": "nombre"
+                }
+              },
+              {
+                "key": "numeroIdentificacion",
+                "type": "input",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Número de identificador fiscal",
+                  "placeholder": "Introduce número de identificador fiscal",
+                  "required": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos de Contacto"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "paisRef",
+                "type": "select-paises",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "País",
+                  "placeholder": "Seleccionar país",
+                  "valueProp": "id",
+                  "labelProp": "nombre"
+                }
+              },
+              {
+                "key": "comunidadAutonomaRef",
+                "type": "select-comunidades",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "C. Autón./Reg.",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar C. Autón./Reg.",
+                  "propertyBound": "paisRef",
+                  "valueProp": "id"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "provinciaRef",
+                "type": "select-provincias",
+                "className": "flex-1",
+                "templateOptions": {
+                  "disabled": false,
+                  "label": "Provincia",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar provincia",
+                  "propertyBound": "comunidadAutonomaRef",
+                  "valueProp": "id"
+                }
+              },
+              {
+                "key": "poblacion",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Ciudad",
+                  "placeholder": "Introduce ciudad"
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "codigoPostal",
+                "type": "input",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "label": "Código postal",
+                  "placeholder": "Introduce código postal",
+                  "required": false
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "direccion",
+                "type": "input",
+                "className": "flex-2",
+                "templateOptions": {
+                  "label": "Dirección",
+                  "placeholder": "Introduce dirección"
+                }
+              }
+            ]
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "telefonos",
+            "templateOptions": {
+              "entity": "teléfono",
+              "gender": "male",
+              "title": "Teléfonos"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Teléfonos"
+              },
+              "fieldGroup": [
+                {
+                  "key": "telefono",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Teléfono/Móvil",
+                    "order": 20,
+                    "placeholder": "Introduce teléfono/móvil",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "emails",
+            "templateOptions": {
+              "entity": "email",
+              "gender": "male",
+              "title": "Emails"
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "gender": "male",
+                "text": "Email"
+              },
+              "fieldGroup": [
+                {
+                  "key": "email",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Email",
+                    "order": 20,
+                    "placeholder": "Introduce email",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+        </args>
+      </payloadFactory>
+      <respond/>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/empresas/formly/view">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="ESB-EMP-E,ESB-EMP-V"/>
+      </call-template>
+      <sequence key="sgemp-remove-authorization-header-sequence" />
+
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"900px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos Generales"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoSede",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Tipo de sede",
+                  "placeholder": "Introduce tipo de sede",
+                  "disabled": true,
+                  "options": [
+                    {
+                      "value": "entidad",
+                      "label": "Entidad"
+                    },
+                    {
+                      "value": "subentidad",
+                      "label": "Subentidad"
+                    }
+                  ]
+                }
+              },
+              {
+                "key": "datosEconomicos",
+                "type": "select",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Datos económicos",
+                  "placeholder": "Introduce datos económicos",
+                  "disabled": true,
+                  "options": [
+                    {
+                      "value": true,
+                      "label": "Sí"
+                    },
+                    {
+                      "value": false,
+                      "label": "No"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "key": "nombre",
+            "type": "input",
+            "templateOptions": {
+              "label": "Nombre",
+              "placeholder": "Introduce nombre",
+              "disabled": true
+            }
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "padreId",
+                "type": "select-empresas",
+                "className": "flex-1",
+                "hideExpression": "!model.tipoSede || model.tipoSede === 'entidad'",
+                "templateOptions": {
+                  "label": "Entidad principal",
+                  "placeholder": "Selecciona entidad principal",
+                  "disabled": true,
+                  "required": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "tipoIdentificadorId",
+                "type": "select-tipos-identificadores",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Tipo de identificador fiscal",
+                  "placeholder": "Introduce tipo de identificador fiscal",
+                  "valueProp": "id",
+                  "labelProp": "nombre",
+                  "disabled": true
+                }
+              },
+              {
+                "key": "numeroIdentificacion",
+                "type": "input",
+                "className": "flex-1",
+                "hideExpression": "model.tipoSede === 'subentidad'",
+                "templateOptions": {
+                  "label": "Número de identificador fiscal",
+                  "placeholder": "Introduce número de identificador fiscal",
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos de Contacto"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "paisRef",
+                "type": "select-paises",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "País",
+                  "placeholder": "Seleccionar país",
+                  "valueProp": "id",
+                  "labelProp": "nombre",
+                  "disabled": true
+                }
+              },
+              {
+                "key": "comunidadAutonomaRef",
+                "type": "select-comunidades",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "C. Autón./Reg.",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar C. Autón./Reg.",
+                  "propertyBound": "paisRef",
+                  "valueProp": "id",
+                  "disabled": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "provinciaRef",
+                "type": "select-provincias",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Provincia",
+                  "labelProp": "nombre",
+                  "placeholder": "Seleccionar provincia",
+                  "propertyBound": "comunidadAutonomaRef",
+                  "valueProp": "id",
+                  "disabled": true
+                }
+              },
+              {
+                "key": "poblacion",
+                "type": "input",
+                "className": "flex-1",
+                "templateOptions": {
+                  "label": "Ciudad",
+                  "placeholder": "Introduce ciudad",
+                  "disabled": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "codigoPostal",
+                "type": "input",
+                "className": "flex-1-50",
+                "templateOptions": {
+                  "label": "Código postal",
+                  "placeholder": "Introduce código postal",
+                  "disabled": true
+                }
+              }
+            ]
+          },
+          {
+            "fieldGroupClassName": "row-formly",
+            "fieldGroup": [
+              {
+                "key": "direccion",
+                "type": "input",
+                "className": "flex-2",
+                "templateOptions": {
+                  "label": "Dirección",
+                  "placeholder": "Introduce dirección",
+                  "disabled": true
+                }
+              }
+            ]
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "telefonos",
+            "templateOptions": {
+              "entity": "teléfono",
+              "gender": "male",
+              "title": "Teléfonos",
+              "disabled": true
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "text": "Teléfonos"
+              },
+              "fieldGroup": [
+                {
+                  "key": "telefono",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Teléfono/Móvil",
+                    "order": 20,
+                    "placeholder": "Introduce teléfono/móvil",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "table-crud-one-element",
+            "key": "emails",
+            "templateOptions": {
+              "entity": "email",
+              "gender": "male",
+              "title": "Emails",
+              "disabled": true
+            },
+            "fieldArray": {
+              "templateOptions": {
+                "gender": "male",
+                "text": "Email"
+              },
+              "fieldGroup": [
+                {
+                  "key": "email",
+                  "type": "input",
+                  "templateOptions": {
+                    "label": "Email",
+                    "order": 20,
+                    "placeholder": "Introduce email",
+                    "required": true
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+          <arg value="[]" literal="true"/>
+        </args>
+      </payloadFactory>
+      <respond/>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <!-- empresas autocomplete -->
+  <resource methods="GET" url-mapping="/empresasFast">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <!-- Get URL from HTTP transport properties -->
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <!-- Rewrite get URL property as input and modify the same input property as output -->
+      <script language="js">
+        <![CDATA[
+          var url = mc.getProperty('url');
+
+          var busqueda = mc.getProperty('query.param.busqueda');
+          var newQuery = 'numeroIdentificacion=ik="' + busqueda + '",nombre=ik="' + busqueda + '",razonSocial=ik="' + busqueda + '"';
+          var onlyEmpresasPrincipales = mc.getProperty('query.param.onlyEmpresasPrincipales');
+          if (onlyEmpresasPrincipales) {
+            newQuery = 'q=(' + newQuery + ');padreId=na=""'; 
+          } else {
+            newQuery = 'q=' + newQuery; 
+          }
+
+          var sort = '&s=nombre,asc';
+
+          mc.setProperty('url', '/empresas?' + encodeURI(newQuery) + sort);
+        ]]>
+      </script>
+      <!-- Set URL HTTP transport properties by rewrited value -->
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <!-- Force page size to 11 and page 0 -->
+      <header name="X-Page" value="0" scope="transport"/>
+      <header name="X-Page-Size" value="11" scope="transport"/>
+      <send>
+        <endpoint key="sgemp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+
+  <!-- datos contacto -->
+  <resource methods="GET" uri-template="/datos-contacto/empresa/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value=""/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+  <!-- tipos identificador -->
+  <resource methods="GET" url-mapping="/tipos-identificador">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value=""/>
+      </call-template>
+      <send>
+        <endpoint key="sgemp-endpoint"/>
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond/>
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence"/>
+    </faultSequence>
+  </resource>
+
+</api>
