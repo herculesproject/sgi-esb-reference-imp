@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/sge/public" name="sge-public-api" publishSwagger="/_system/governance/swagger_files/sge-swagger.yaml" xmlns="http://ws.apache.org/ns/synapse">
+
+  <!-- codigos economicos gastos -->
+  <resource methods="GET" uri-template="/codigos-economicos-gastos/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/codigos-economicos-gastos" value="/public/codigos-economicos-gastos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- partidas presupuestarias gastos -->
+  <resource methods="GET" uri-template="/partidas-presupuestarias-gastos/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/partidas-presupuestarias-gastos" value="/public/partidas-presupuestarias-gastos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- partidas presupuestarias ingresos -->
+  <resource methods="GET" uri-template="/partidas-presupuestarias-ingresos/{id}">
+    <inSequence>
+      <property name="url" expression="get-property('axis2','REST_URL_POSTFIX')" />
+      <rewrite inProperty="url" outProperty="url">
+        <rewriterule>
+          <action type="replace" regex="/partidas-presupuestarias-ingresos" value="/public/partidas-presupuestarias-ingresos" fragment="path" />
+        </rewriterule>
+      </rewrite>
+      <property name="REST_URL_POSTFIX" scope="axis2" expression="get-property('url')" />
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+</api>

@@ -1,0 +1,1221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/sge" name="sge-api" publishSwagger="/_system/governance/swagger_files/sge-swagger.yaml" xmlns="http://ws.apache.org/ns/synapse">
+
+  <!-- codigos economicos gastos -->
+  <resource methods="GET" url-mapping="/codigos-economicos-gastos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/codigos-economicos-gastos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- codigos economicos ingresos -->
+  <resource methods="GET" url-mapping="/codigos-economicos-ingresos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/codigos-economicos-ingresos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- documentos -->
+  <resource methods="GET" uri-template="/documentos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/documentos/{id}/archivo">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- ejecucion economica -->
+  <resource methods="GET" url-mapping="/ejecucion-economica">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/ejecucion-economica/columnas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+  
+  <resource methods="GET" uri-template="/ejecucion-economica/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- gastos -->
+  <resource methods="GET" url-mapping="/gastos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/gastos/columnas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/gastos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="PATCH" uri-template="/gastos/{id}/validar">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="PATCH" uri-template="/gastos/{id}/rechazar">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- partidas presupuestarias gastos -->
+  <resource methods="GET" url-mapping="/partidas-presupuestarias-gastos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/partidas-presupuestarias-gastos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- partidas presupuestarias ingresos -->
+  <resource methods="GET" url-mapping="/partidas-presupuestarias-ingresos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/partidas-presupuestarias-ingresos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- proyectos -->
+  <resource methods="GET" url-mapping="/proyectos">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/proyectos/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/proyectos/formly/create">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <sequence key="sge-remove-authorization-header-sequence" />
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"700px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": ""
+        },
+        "fieldGroup": [
+          {
+            "fieldGroup": [
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgiId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGI",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgiId": "formState.mainModel.formlyDataSGI.id"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "titulo",
+                "type": "i18n-input",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Título proyecto",
+                  "required": true
+                },
+                "expressionProperties": {
+                  "model.titulo": "formState.mainModel.formlyDataSGI.titulo"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "fechaInicio",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha inicio",
+                      "luxonFormat": "shortDate",
+                      "placeholder": "Introduce fecha inicio",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.fechaInicio": "formState.mainModel.formlyDataSGI.fechaInicio"
+                    }
+                  },
+                  {
+                    "key": "fechaFin",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha fin",
+                      "luxonFormat": "shortDate",
+                      "placeholder": "Introduce fecha fin",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "responsableRef",
+                "expressionProperties": {
+                  "model.responsableRef": "formState.mainModel.formlyDataSGI.responsable?.id"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "responsable",
+                    "type": "input",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Responsable",
+                      "required": false
+                    },
+                    "expressionProperties": {
+                      "model.responsable": "formState.mainModel.formlyDataSGI.responsable?.nombreCompleto"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args />
+      </payloadFactory>
+      <respond />
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/proyectos/formly/update">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <sequence key="sge-remove-authorization-header-sequence" />
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"700px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Datos del proyecto económico en el SGE"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroup": [
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeProyectoSgiId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGI",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeProyectoSgiId": "formState.mainModel.proyectoSge.proyectoSGIId"
+                    }
+                  },
+                  {
+                    "key": "proyectoSgeId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGE",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeId": "formState.mainModel.proyectoSge.id"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "proyectoSgeTitulo",
+                "type": "input",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Título proyecto",
+                  "required": true
+                },
+                "expressionProperties": {
+                  "model.proyectoSgeTitulo": "formState.mainModel.proyectoSge.titulo"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeFechaInicio",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "luxonFormat": "shortDate",
+                      "label": "Fecha inicio",
+                      "placeholder": "Introduce fecha inicio",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeFechaInicio": "formState.mainModel.proyectoSge.fechaInicio"
+                    }
+                  },
+                  {
+                    "key": "proyectoSgeFechaFin",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha fin",
+                      "luxonFormat": "shortDate",
+                      "placeholder": "Introduce fecha fin",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin"
+                    }
+                  }
+                ]
+              },
+                            {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeResponsable",
+                    "type": "input-persona-nombre-completo",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Responsable",
+                      "required": false
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeResponsable": "formState.mainModel.proyectoSge.responsableRef"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": "Nuevos datos del proyecto en el SGI"
+        },
+        "fieldGroup": [
+          {
+            "fieldGroup": [
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgiId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGI",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgiId": "formState.mainModel.formlyDataSGI.id"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "titulo",
+                "type": "i18n-input",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Título proyecto",
+                  "required": true
+                },
+                "expressionProperties": {
+                  "model.titulo": "formState.mainModel.formlyDataSGI.titulo"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "fechaInicio",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha inicio",
+                      "luxonFormat": "shortDate",
+                      "placeholder": "Introduce fecha inicio",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.fechaInicio": "formState.mainModel.formlyDataSGI.fechaInicio"
+                    }
+                  },
+                  {
+                    "key": "fechaFin",
+                    "type": "dateTimePicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha fin",
+                      "luxonFormat": "shortDate",
+                      "placeholder": "Introduce fecha fin",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "responsableRef",
+                "expressionProperties": {
+                  "model.responsableRef": "formState.mainModel.formlyDataSGI.responsable?.id"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "responsable",
+                    "type": "input",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Responsable",
+                      "required": false
+                    },
+                    "expressionProperties": {
+                      "model.responsable": "formState.mainModel.formlyDataSGI.responsable?.nombreCompleto"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args />
+      </payloadFactory>
+      <respond />
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/proyectos/formly/view">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      
+      <sequence key="sge-remove-authorization-header-sequence" />
+
+      <payloadFactory media-type="json">
+        <format>
+[
+  {
+    "wrappers": [
+      "global"
+    ],
+    "templateOptions": {
+      "styles": "{ \"width\": \"700px\" }"
+    },
+    "fieldGroup": [
+      {
+        "wrappers": [
+          "mat-card-group"
+        ],
+        "templateOptions": {
+          "label": ""
+        },
+        "fieldGroup": [
+          {
+            "fieldGroup": [
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeProyectoSgiId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGI",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeProyectoSgiId": "formState.mainModel.proyectoSge.proyectoSGIId"
+                    }
+                  },
+                  {
+                    "key": "proyectoSgeId",
+                    "type": "input",
+                    "className": "flex-1-50",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Identificador proyecto SGE",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeId": "formState.mainModel.proyectoSge.id"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "proyectoSgeTitulo",
+                "type": "input",
+                "templateOptions": {
+                  "disabled": true,
+                  "label": "Título proyecto",
+                  "required": true
+                },
+                "expressionProperties": {
+                  "model.proyectoSgeTitulo": "formState.mainModel.proyectoSge.titulo"
+                }
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeFechaInicio",
+                    "type": "datepicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha inicio",
+                      "placeholder": "Introduce fecha inicio",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeFechaInicio": "formState.mainModel.proyectoSge.fechaInicio"
+                    }
+                  },
+                  {
+                    "key": "proyectoSgeFechaFin",
+                    "type": "datepicker",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Fecha fin",
+                      "placeholder": "Introduce fecha fin",
+                      "required": true
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin"
+                    }
+                  }
+                ]
+              },
+              {
+                "fieldGroupClassName": "row-formly",
+                "fieldGroup": [
+                  {
+                    "key": "proyectoSgeResponsable",
+                    "type": "input-persona-nombre-completo",
+                    "className": "flex-1",
+                    "templateOptions": {
+                      "disabled": true,
+                      "label": "Responsable",
+                      "required": false
+                    },
+                    "expressionProperties": {
+                      "model.proyectoSgeResponsable": "formState.mainModel.proyectoSge.responsableRef"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+        </format>
+        <args />
+      </payloadFactory>
+      <respond />
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="POST" url-mapping="/proyectos/formly">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/proyectos/formly/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="PUT" uri-template="/proyectos/formly/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- proyectos anualidades -->
+  <resource methods="POST" url-mapping="/proyectos/anualidades">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- proyectos notificar relaciones eliminadas -->
+  <resource methods="POST" uri-template="/proyectos/{id}/notificaciones/relaciones-eliminadas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- facturas emitidas -->
+  <resource methods="GET" url-mapping="/facturas-emitidas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/facturas-emitidas/columnas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/facturas-emitidas/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- facturas previstas -->
+  <resource methods="POST" url-mapping="/facturas-previstas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="PUT" uri-template="/facturas-previstas/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/facturas-previstas-emitidas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/facturas-previstas-pendientes">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/facturas-previstas">
+    <inSequence>
+      <send>
+        <endpoint key="sgicsp-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- periodos amortizacion -->
+  <resource methods="POST" url-mapping="/periodos-amortizacion">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="PUT" uri-template="/periodos-amortizacion/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="DELETE" uri-template="/periodos-amortizacion/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- Seguimiento justifiaccion -->
+  <resource methods="GET" url-mapping="/seguimiento-justificacion">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" url-mapping="/seguimiento-justificacion/columnas">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <resource methods="GET" uri-template="/seguimiento-justificacion/{id}">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+
+  <!-- solicitudes proyecto -->
+  <resource methods="GET" uri-template="/solicitudes-proyecto/{proyectoSgiId}/pendientes">
+    <inSequence>
+      <call-template target="sgi-auth-sequence-template">
+        <with-param name="requiredAuthorities" value="" />
+      </call-template>
+      <send>
+        <endpoint key="sge-endpoint" />
+      </send>
+    </inSequence>
+    <outSequence>
+      <respond />
+    </outSequence>
+    <faultSequence>
+      <sequence key="error-handling-sequence" />
+    </faultSequence>
+  </resource>
+  
+</api>
