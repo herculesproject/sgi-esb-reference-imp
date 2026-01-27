@@ -436,7 +436,8 @@
                       "required": true
                     },
                     "expressionProperties": {
-                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin"
+                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin",
+                      "templateOptions.required": "formState.mainModel.formlyDataSGI.tipoEntidadSGI == 'PROYECTO'"
                     }
                   }
                 ]
@@ -572,7 +573,8 @@
                       "required": true
                     },
                     "expressionProperties": {
-                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin"
+                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin",
+                      "templateOptions.required": "formState.mainModel.formlyDataSGI.tipoEntidadSGI == 'PROYECTO'"
                     }
                   }
                 ]
@@ -669,7 +671,8 @@
                       "required": true
                     },
                     "expressionProperties": {
-                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin"
+                      "model.fechaFin": "formState.mainModel.formlyDataSGI.fechaFin",
+                      "templateOptions.required": "formState.mainModel.formlyDataSGI.tipoEntidadSGI == 'PROYECTO'"
                     }
                   }
                 ]
@@ -805,7 +808,8 @@
                       "required": true
                     },
                     "expressionProperties": {
-                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin"
+                      "model.proyectoSgeFechaFin": "formState.mainModel.proyectoSge.fechaFin",
+                      "templateOptions.required": "formState.mainModel.formlyDataSGI.tipoEntidadSGI == 'PROYECTO'"
                     }
                   }
                 ]
