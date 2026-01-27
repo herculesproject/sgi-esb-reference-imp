@@ -516,19 +516,6 @@
                 "fieldGroupClassName": "row-formly",
                 "fieldGroup": [
                   {
-                    "key": "proyectoSgeProyectoSgiId",
-                    "type": "input",
-                    "className": "flex-1-50",
-                    "templateOptions": {
-                      "disabled": true,
-                      "label": "Identificador proyecto SGI",
-                      "required": true
-                    },
-                    "expressionProperties": {
-                      "model.proyectoSgeProyectoSgiId": "formState.mainModel.proyectoSge.proyectoSGIId"
-                    }
-                  },
-                  {
                     "key": "proyectoSgeId",
                     "type": "input",
                     "className": "flex-1-50",
@@ -763,19 +750,6 @@
               {
                 "fieldGroupClassName": "row-formly",
                 "fieldGroup": [
-                  {
-                    "key": "proyectoSgeProyectoSgiId",
-                    "type": "input",
-                    "className": "flex-1-50",
-                    "templateOptions": {
-                      "disabled": true,
-                      "label": "Identificador proyecto SGI",
-                      "required": true
-                    },
-                    "expressionProperties": {
-                      "model.proyectoSgeProyectoSgiId": "formState.mainModel.proyectoSge.proyectoSGIId"
-                    }
-                  },
                   {
                     "key": "proyectoSgeId",
                     "type": "input",
