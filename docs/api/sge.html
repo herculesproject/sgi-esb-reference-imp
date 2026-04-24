@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SGE API</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+</head>
+
+<body>
+  <h2>SGE API</h2>
+  <div id="swagger-sge"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script>
+    window.onload = () => {
+      SwaggerUIBundle({
+        url: "./sge-openapi-definition.yml",
+        dom_id: "#swagger-sge",
+      });
+    };
+  </script>
+</body>
+</html>
