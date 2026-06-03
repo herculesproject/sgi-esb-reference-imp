@@ -47,9 +47,10 @@ COPY --chown=wso2carbon:wso2 docker/deployment.toml ${WORKING_DIRECTORY}/wso2mi-
 # Add script to copy esb-composite before launch server
 COPY --chown=wso2carbon:wso2 docker/sgi-esb-entrypoint.sh ${WORKING_DIRECTORY}
 
-RUN chmod +x ${WORKING_DIRECTORY}/sgi-esb-entrypoint.sh
+RUN chmod +x ${WORKING_DIRECTORY}/sgi-esb-entrypoint.sh \
+  && chmod 777 ${WSO2_SERVER_HOME}/repository/deployment/server/carbonapps/
 
-RUN chmod 777 ${WSO2_SERVER_HOME}/repository/deployment/server/carbonapps/
+WORKDIR ${WORKING_DIRECTORY}
 
 # Generate nginx.conf using environment variables
-ENTRYPOINT ${WORKING_DIRECTORY}/sgi-esb-entrypoint.sh
+ENTRYPOINT ["./sgi-esb-entrypoint.sh"]
